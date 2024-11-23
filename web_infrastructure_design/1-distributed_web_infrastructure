@@ -1,0 +1,50 @@
+                  +-------------------+
+User's Computer ->|      Internet     |
+                  +-------------------+
+                           |
+                     +-----v-----+
+                     |    DNS    |
+                     +-----^-----+
+                           |
+                      Load Balancer
+                    +-----------------+
+                    |   HAProxy       |
+                    +-----------------+
+                      /         \
+            +----------------+  +----------------+
+            | Web Server 1   |  | Web Server 2   |
+            |   (Nginx)      |  |   (Nginx)      |
+            +----------------+  +----------------+
+                      \                /
+                +----------------------------+
+                |     Application Server     |
+                | (e.g., Flask/Node.js/etc.) |
+                +----------------------------+
+                      |
+                +---------------------+
+                |  Database Cluster   |
+                | Primary & Replica   |
+                +---------------------+
+
+Components Explanation
+Load Balancer (HAProxy):
+
+Why add it? It distributes incoming traffic between web servers to avoid overloading a single server and provides failover if one web server goes down.
+Distribution Algorithm: Round-robin.
+How it works: Requests are distributed sequentially to available web servers, ensuring an even load across all servers.
+Active-Active vs. Active-Passive:
+Active-Active: All servers handle requests simultaneously, providing better resource utilization and fault tolerance.
+Active-Passive: One server handles requests while the other(s) remain on standby, taking over only if the active server fails.
+This setup uses Active-Active, as both web servers actively handle traffic.
+Web Servers (Nginx):
+
+Why add them? Web servers handle static file delivery and forward dynamic requests to the application server, offloading processing from a single point.
+Benefit of two servers: Load balancing ensures better availability and fault tolerance.
+Database Cluster (Primary-Replica):
+
+Why add it? Splitting the database into a primary-replica setup improves performance and data redundancy.
+How it works:
+The Primary node handles all write operations and propagates changes to the Replica node.
+The Replica node handles read-only operations, improving scalability for read-heavy applications.
+Difference for the application:
+The application writes only to the Primary node and reads from the Replica node, ensuring consistent performance and avoiding overloading the primary.`

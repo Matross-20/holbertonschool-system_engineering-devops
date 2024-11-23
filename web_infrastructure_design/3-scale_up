@@ -1,0 +1,44 @@
+                          +----------------+
+User's Computer --------->|  Internet      |
+                          +----------------+
+                                   |
+                           +-----------------+
+                           | DNS (for HA)   |
+                           +-----------------+
+                                   |
+                    +-----------------+   +-----------------+
+                    | Load Balancer 1 |---| Load Balancer 2 |
+                    |    (HAProxy)    |   |    (HAProxy)    |
+                    +-----------------+   +-----------------+
+                           |                     |
+                  +----------------+    +------------------+
+                  | Web Server 1   |    | Web Server 2     |
+                  |   (Nginx)      |    |   (Nginx)        |
+                  +----------------+    +------------------+
+                           |                     |
+                  +----------------+    +------------------+
+                  | App Server 1   |    | App Server 2     |
+                  |  (Flask, etc.) |    |  (Node.js, etc.) |
+                  +----------------+    +------------------+
+                           |                     |
+                      +-----------------------------+
+                      |       Database Cluster       |
+                      | (Primary + Replica Nodes)    |
+                      +-----------------------------+
+
+Key Roles Explained
+1. Web Server:
+Role: Handles HTTP/HTTPS requests, serving static content (e.g., HTML, CSS, JavaScript) and forwarding dynamic requests to the application server.
+Example: Nginx, Apache.
+Why split it? Dedicated web servers offload request handling from the application servers, improving performance and scalability.
+2. Application Server:
+Role: Executes backend application logic (e.g., processing API requests, executing business rules) and communicates with the database.
+Example: Flask, Node.js, Java Spring.
+Why split it? Running the application server separately isolates backend logic, ensuring the web server focuses on handling incoming requests without resource contention.
+3. Database Server:
+Role: Stores, retrieves, and manages application data. Includes a Primary node for writes and a Replica node for read operations.
+Example: MySQL, PostgreSQL.
+Why split it? Dedicated database servers enhance performance by reducing interference from web or application processes.
+4. Load Balancers (HAProxy in Cluster Mode):
+Role: Distributes incoming traffic across web servers for load management and failover. Clustered HAProxy setup ensures continuous availability.
+Why add clustering? A single load balancer is a single point of failure (SPOF). Clustering ensures high availability (Active-Passive setup), where the second load balancer takes over if the primary fails.

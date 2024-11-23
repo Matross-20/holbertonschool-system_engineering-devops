@@ -1,0 +1,54 @@
+                      +---------------------+
+User's Computer ----> |    Internet         |
+                      +---------------------+
+                               |
+                               |
+                          Firewall 1
+                               |
+                      +---------------------+
+                      |   Load Balancer     |
+                      |   (HAProxy + SSL)   |
+                      +---------------------+
+                               |
+                          Firewall 2
+                               |
+             +-------------------+-------------------+
+             |                   |                   |
+       +-----------+       +-----------+       +-----------+
+       | Web Server|       | Web Server|       | Web Server|
+       |   Nginx   |       |   Nginx   |       |   Nginx   |
+       +-----------+       +-----------+       +-----------+
+             |                   |                   |
+        Firewall 3           Firewall 3          Firewall 3
+             |                   |                   |
+       +-----------+       +-----------+       +-----------+
+       |App Server |       |App Server |       |App Server |
+       +-----------+       +-----------+       +-----------+
+             |                   |                   |
+       +---------------------------------------------+
+       |                 MySQL Cluster               |
+       |         (Primary + Replica Nodes)           |
+       +---------------------------------------------+
+                           |
+                    Monitoring Clients
+                        (Sumo Logic)
+
+Added Components Explanation
+Firewalls (3 total):
+
+Why add them? Firewalls protect the infrastructure by filtering incoming and outgoing traffic, only allowing authorized connections.
+Firewall 1: Protects the load balancer from malicious external traffic.
+Firewall 2: Restricts traffic between the load balancer and the web servers.
+Firewall 3: Secures traffic between the web servers and the application/database layer.
+SSL Certificate:
+
+Why serve traffic over HTTPS? Encrypts communication between the user's browser and the load balancer, protecting data from eavesdropping and ensuring the authenticity of the website.
+Monitoring Clients:
+
+Why monitor? Monitoring tracks system health, detects issues, and ensures performance metrics (e.g., QPS or query-per-second) are within expected limits.
+How it collects data:
+Monitoring clients (e.g., for Sumo Logic) collect logs, metrics, and traces from each server (e.g., CPU usage, memory, disk I/O, network traffic).
+Data is aggregated in the monitoring platform for real-time analysis and alerting.
+Monitoring QPS for Web Server: Configure the monitoring client to:
+Track HTTP requests per second via logs or metrics (e.g., from Nginx access logs).
+Aggregate and visualize this data in dashboards.

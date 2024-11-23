@@ -1,0 +1,55 @@
+                     +-----------------+
+User's Computer ---> |   Internet      | ---+
+                     +-----------------+    |
+                                             |
+                                         +---v---+
+                                         |   DNS   |
+                                         +---^---+
+                                             |
+                                        8.8.8.8
+                                             |
+                +------------------------------------+
+                |         Single Server              |
+                |                                    |
+                | +-------------------------------+  |
+                | |        Nginx Web Server       |  |
+                | +-------------------------------+  |
+                |            |                       |
+                | +-------------------------------+  |
+                | |    Application Server         |  |
+                | | (e.g., Python/Node.js/Java)   |  |
+                | +-------------------------------+  |
+                |            |                       |
+                | +-------------------------------+  |
+                | |        MySQL Database         |  |
+                | +-------------------------------+  |
+                +------------------------------------+
+
+Components Explanation
+What is a server?
+
+A server is a powerful computer designed to host services, applications, and data, enabling users to access them over a network. In this case, the server at 8.8.8.8 runs the website infrastructure.
+What is the role of the domain name?
+
+The domain name (foobar.com) provides a human-readable address that maps to the server's IP address (8.8.8.8). It allows users to access the website without needing to remember numerical IP addresses.
+What type of DNS record is www in www.foobar.com?
+
+The www record is a CNAME (Canonical Name) or A (Address) record pointing to the IP address 8.8.8.8.
+Role of the Web Server (Nginx):
+
+The web server handles incoming HTTP/HTTPS requests from the user's browser.
+It serves static files (like HTML, CSS, JavaScript).
+It forwards dynamic requests to the application server.
+Role of the Application Server:
+
+The application server executes the website's backend logic.
+It processes user inputs, handles business logic, and interacts with the database.
+Examples: Flask, Node.js, or Java-based applications.
+Role of the Database (MySQL):
+
+The database stores and retrieves structured data (e.g., user details, product listings).
+It ensures data integrity and provides efficient access to application data.
+How does the server communicate with the user’s computer?
+
+The server and the user's computer communicate using the HTTP/HTTPS protocol over the internet.
+The browser sends an HTTP request, and the server responds with HTML content.
